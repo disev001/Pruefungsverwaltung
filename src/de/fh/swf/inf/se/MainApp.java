@@ -44,7 +44,7 @@ public class MainApp extends Application {
 
     public MainApp() {
         // Add some sample data
-        notenListe.add(new Fach("Mathe") );
+        notenListe.add(new Fach("Neue Prüfung") );
     }
 
     public ObservableList<Fach> getNotenListe() {

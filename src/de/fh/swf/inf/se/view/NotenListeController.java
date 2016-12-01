@@ -2,11 +2,18 @@ package de.fh.swf.inf.se.view;
 
 import de.fh.swf.inf.se.MainApp;
 import de.fh.swf.inf.se.model.Fach;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class NotenListeController {
 
@@ -42,6 +49,8 @@ public class NotenListeController {
      * method.
      */
     public NotenListeController() {
+
+
     }
 
     /**
@@ -55,6 +64,52 @@ public class NotenListeController {
         tc_note.setCellValueFactory(cellData -> cellData.getValue().noteProperty().asObject());
         tc_cp.setCellValueFactory(cellData -> cellData.getValue().cpProperty().asObject());
         tc_versuch.setCellValueFactory(cellData -> cellData.getValue().versuchProperty().asObject());
+
+        tc_fach.setCellFactory(TextFieldTableCell.forTableColumn());
+        tc_fach.setOnEditCommit(
+                new EventHandler<CellEditEvent<Fach, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Fach, String> t) {
+                        ((Fach) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setFachname(t.getNewValue());
+                    }
+                }
+        );
+
+        tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        tc_note.setOnEditCommit(
+                new EventHandler<CellEditEvent<Fach, Double>>() {
+                    @Override
+                    public void handle(CellEditEvent<Fach, Double> t) {
+                        ((Fach) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setNote(t.getNewValue());
+                    }
+                }
+        );
+        tc_cp.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        tc_cp.setOnEditCommit(
+                new EventHandler<CellEditEvent<Fach, Integer>>() {
+                    @Override
+                    public void handle(CellEditEvent<Fach, Integer> t) {
+                        ((Fach) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCp(t.getNewValue());
+                    }
+                }
+        );
+        tc_versuch.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        tc_versuch.setOnEditCommit(
+                new EventHandler<CellEditEvent<Fach, Integer>>() {
+                    @Override
+                    public void handle(CellEditEvent<Fach, Integer> t) {
+                        ((Fach) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setVersuch(t.getNewValue());
+                    }
+                }
+        );
     }
 
     /**
@@ -68,4 +123,6 @@ public class NotenListeController {
         // Add observable list data to the table
         notenTable.setItems(mainApp.getNotenListe());
     }
+
+
 }
