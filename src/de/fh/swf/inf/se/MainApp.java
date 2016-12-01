@@ -4,6 +4,7 @@ import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.view.NotenListeController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,7 +44,7 @@ public class MainApp extends Application {
 
 
     public MainApp() {
-        // Add some sample data
+        // 1.Eintrag
         notenListe.add(new Fach("Neue Prüfung") );
     }
 

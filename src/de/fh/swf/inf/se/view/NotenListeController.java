@@ -2,6 +2,8 @@ package de.fh.swf.inf.se.view;
 
 import de.fh.swf.inf.se.MainApp;
 import de.fh.swf.inf.se.model.Fach;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,7 +45,7 @@ public class NotenListeController {
 
     @SuppressWarnings("unused")
     private MainApp mainApp;
-
+    ObservableList<Fach> notenListe;
     /**
      * The constructor. The constructor is called before the initialize()
      * method.
@@ -52,6 +54,7 @@ public class NotenListeController {
 
 
     }
+
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -69,14 +72,21 @@ public class NotenListeController {
         tc_fach.setOnEditCommit(
                 new EventHandler<CellEditEvent<Fach, String>>() {
                     @Override
+                    //Ändern von Fachname
                     public void handle(CellEditEvent<Fach, String> t) {
                         ((Fach) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setFachname(t.getNewValue());
+                    //Ändern von Standartfachnamen erstellt neuen Eintrag
+                    if(!((Fach) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).getFachname().equals("Neue Prüfung")){
+                        notenListe.add(new Fach("Neue Prüfung"));
+                    };
                     }
                 }
         );
-
+        //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         tc_note.setOnEditCommit(
                 new EventHandler<CellEditEvent<Fach, Double>>() {
@@ -88,6 +98,7 @@ public class NotenListeController {
                     }
                 }
         );
+        //Editiertbarkeit der CP
         tc_cp.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         tc_cp.setOnEditCommit(
                 new EventHandler<CellEditEvent<Fach, Integer>>() {
@@ -99,6 +110,7 @@ public class NotenListeController {
                     }
                 }
         );
+        //Editiertbarkeit der Versuche
         tc_versuch.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         tc_versuch.setOnEditCommit(
                 new EventHandler<CellEditEvent<Fach, Integer>>() {
@@ -110,6 +122,8 @@ public class NotenListeController {
                     }
                 }
         );
+        // Reaktionen auf Änderungen innerhalb der Tabelle
+
     }
 
     /**
@@ -119,10 +133,15 @@ public class NotenListeController {
      */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        setListe();
+        // Add observable list data to the table
+        //notenTable.setItems(notenListe);
+    }
+    public void setListe() {
 
         // Add observable list data to the table
-        notenTable.setItems(mainApp.getNotenListe());
+        notenListe = this.mainApp.getNotenListe();
+        notenTable.setItems(notenListe);
     }
-
 
 }
