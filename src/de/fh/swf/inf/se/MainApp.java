@@ -1,15 +1,17 @@
 package de.fh.swf.inf.se;
+
 import java.io.IOException;
+
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.view.NotenListeController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 /**
  * Created by dsee on 28.11.2016.
  */
@@ -45,7 +47,7 @@ public class MainApp extends Application {
 
     public MainApp() {
         // 1.Eintrag
-        notenListe.add(new Fach("Neue Prüfung") );
+        notenListe.add(new Fach("Neue Prüfung"));
     }
 
     public ObservableList<Fach> getNotenListe() {

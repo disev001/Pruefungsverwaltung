@@ -12,6 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
@@ -46,28 +48,28 @@ public class NotenListeController {
     @SuppressWarnings("unused")
     private MainApp mainApp;
     ObservableList<Fach> notenListe;
+
     /**
      * The constructor. The constructor is called before the initialize()
      * method.
      */
     public NotenListeController() {
 
-
     }
 
-
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
-     */
     @FXML
     private void initialize() {
-        // Initialize the person table with the two columns.
+        // Initialisierung, wird vom fxml loader aufgerufen
         tc_fach.setCellValueFactory(cellData -> cellData.getValue().fachnameProperty());
         tc_note.setCellValueFactory(cellData -> cellData.getValue().noteProperty().asObject());
         tc_cp.setCellValueFactory(cellData -> cellData.getValue().cpProperty().asObject());
         tc_versuch.setCellValueFactory(cellData -> cellData.getValue().versuchProperty().asObject());
 
+        evenListener();
+    }
+
+    private void evenListener() {
+        //Editiertbarkeit Fachname
         tc_fach.setCellFactory(TextFieldTableCell.forTableColumn());
         tc_fach.setOnEditCommit(
                 new EventHandler<CellEditEvent<Fach, String>>() {
@@ -77,15 +79,16 @@ public class NotenListeController {
                         ((Fach) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setFachname(t.getNewValue());
-                    //Ändern von Standartfachnamen erstellt neuen Eintrag
-                    if(!((Fach) t.getTableView().getItems().get(
+                        //Ändern von Standartfachnamen erstellt neuen Eintrag
+                        if (!((Fach) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
-                        ).getFachname().equals("Neue Prüfung")){
-                        notenListe.add(new Fach("Neue Prüfung"));
-                    };
+                        ).getFachname().equals("Neue Prüfung")) {
+                            notenListe.add(new Fach("Neue Prüfung"));
+                        }
                     }
                 }
         );
+
         //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         tc_note.setOnEditCommit(
@@ -122,7 +125,20 @@ public class NotenListeController {
                     }
                 }
         );
-        // Reaktionen auf Änderungen innerhalb der Tabelle
+        // Zeilen löschen
+        notenTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent keyEvent) {
+                final int selectedIndex = notenTable.getSelectionModel().getSelectedIndex();
+                if (notenTable.getItems().size() > 1) {
+                    if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+                        notenTable.getItems().remove(selectedIndex);
+                    }
+                }
+            }
+        });
+
+        //TODO: Berechne Durchschnittsnote und Gesammt CP
 
     }
 
@@ -134,9 +150,8 @@ public class NotenListeController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         setListe();
-        // Add observable list data to the table
-        //notenTable.setItems(notenListe);
     }
+
     public void setListe() {
 
         // Add observable list data to the table
