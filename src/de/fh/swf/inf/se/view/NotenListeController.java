@@ -61,10 +61,14 @@ public class NotenListeController {
         tc_cp.setCellValueFactory(cellData -> cellData.getValue().cpProperty().asObject());
         tc_versuch.setCellValueFactory(cellData -> cellData.getValue().versuchProperty().asObject());
 
-        evenListener();
+        fachnameEvents();
+        noteEvents();
+        cpEvents();
+        versuchEvents(); //überhaupt nötig?
+        rowEvents();
     }
 
-    private void evenListener() {
+    private void fachnameEvents() {
         //Editiertbarkeit Fachname
         tc_fach.setCellFactory(TextFieldTableCell.forTableColumn());
         tc_fach.setOnEditCommit(
@@ -82,7 +86,9 @@ public class NotenListeController {
                     }
                 }
         );
+    }
 
+    private void noteEvents() {
         //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         tc_note.setOnEditCommit(
@@ -96,6 +102,9 @@ public class NotenListeController {
                     }
                 }
         );
+    }
+
+    private void cpEvents() {
         //Editiertbarkeit der CP
         tc_cp.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         tc_cp.setOnEditCommit(
@@ -104,10 +113,14 @@ public class NotenListeController {
                     public void handle(CellEditEvent<Fach, Integer> t) {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setCp(t.getNewValue());
+                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
                         lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
                     }
                 }
         );
+    }
+
+    private void versuchEvents() {
         //Editiertbarkeit der Versuche
         tc_versuch.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         tc_versuch.setOnEditCommit(
@@ -119,6 +132,9 @@ public class NotenListeController {
                     }
                 }
         );
+    }
+
+    private void rowEvents() {
         // Zeilen löschen
         notenTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -133,10 +149,8 @@ public class NotenListeController {
                 }
             }
         });
-
-        //TODO: Berechne Durchschnittsnote und Gesammt CP
-
     }
+
 
     /**
      * Is called by the main application to give a reference back to itself.

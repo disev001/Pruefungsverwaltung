@@ -29,9 +29,7 @@ public final class FachRechnungen {
                 ges[0] += colNote.getCellData(o) * cp;
             }
         });
-
         return ges[0];
-
     }
 
     public void FachRechnungen() {

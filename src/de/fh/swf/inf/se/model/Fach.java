@@ -33,7 +33,9 @@ public class Fach {
     }
 
     public void setFachname(String fachname) {
+
         this.fachname.set(fachname);
+
     }
 
     public StringProperty fachnameProperty() {
