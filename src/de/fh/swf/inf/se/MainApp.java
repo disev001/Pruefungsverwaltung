@@ -1,7 +1,5 @@
 package de.fh.swf.inf.se;
 
-import java.io.IOException;
-
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.view.NotenListeController;
 import javafx.application.Application;
@@ -12,16 +10,28 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 /**
  * Created by dsee on 28.11.2016.
  */
+//https://github.com/disev001/Pruefungsverwaltung.git
 
 public class MainApp extends Application {
 
+    private ObservableList<Fach> notenListe = FXCollections.observableArrayList();
     private Stage primaryStage;
+
     private AnchorPane rootLayout;
 
-    private ObservableList<Fach> notenListe = FXCollections.observableArrayList();
+    public MainApp() {
+        // 1.Eintrag
+        notenListe.add(new Fach("Neue Prüfung"));
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -32,7 +42,7 @@ public class MainApp extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/Notenuebersicht.fxml"));
-            rootLayout = (AnchorPane) loader.load();
+            rootLayout = loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
@@ -42,12 +52,6 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public MainApp() {
-        // 1.Eintrag
-        notenListe.add(new Fach("Neue Prüfung"));
     }
 
     public ObservableList<Fach> getNotenListe() {
@@ -61,9 +65,5 @@ public class MainApp extends Application {
      */
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

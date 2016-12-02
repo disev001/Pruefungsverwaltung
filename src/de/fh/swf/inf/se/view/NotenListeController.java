@@ -1,8 +1,8 @@
 package de.fh.swf.inf.se.view;
 
 import de.fh.swf.inf.se.MainApp;
-import de.fh.swf.inf.se.model.*;
-import javafx.collections.ListChangeListener;
+import de.fh.swf.inf.se.model.Fach;
+import de.fh.swf.inf.se.model.FachRechnungen;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,13 +14,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class NotenListeController {
 
+    ObservableList<Fach> notenListe;
     @FXML
     private TableView<Fach> notenTable;
     @FXML
@@ -31,7 +30,6 @@ public class NotenListeController {
     private TableColumn<Fach, Integer> tc_cp;
     @FXML
     private TableColumn<Fach, Integer> tc_versuch;
-
     @FXML
     private Label lbl_note;
     @FXML
@@ -44,10 +42,8 @@ public class NotenListeController {
     private Button btn_save;
     @FXML
     private Button btn_extra;
-
     @SuppressWarnings("unused")
     private MainApp mainApp;
-    ObservableList<Fach> notenListe;
 
     /**
      * The constructor. The constructor is called before the initialize()
@@ -76,13 +72,11 @@ public class NotenListeController {
                     @Override
                     //Ändern von Fachname
                     public void handle(CellEditEvent<Fach, String> t) {
-                        ((Fach) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setFachname(t.getNewValue());
+                        t.getTableView().getItems().get(
+                                t.getTablePosition().getRow()).setFachname(t.getNewValue());
                         //Ändern von Standartfachnamen erstellt neuen Eintrag
-                        if (!((Fach) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).getFachname().equals("Neue Prüfung")) {
+                        if (!t.getTableView().getItems().get(
+                                t.getTablePosition().getRow()).getFachname().equals("Neue Prüfung")) {
                             notenListe.add(new Fach("Neue Prüfung"));
                         }
                     }
@@ -95,10 +89,10 @@ public class NotenListeController {
                 new EventHandler<CellEditEvent<Fach, Double>>() {
                     @Override
                     public void handle(CellEditEvent<Fach, Double> t) {
-                        ((Fach) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setNote(t.getNewValue());
+                        t.getTableView().getItems().get(
+                                t.getTablePosition().getRow()).setNote(t.getNewValue());
 
+                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_fach, tc_note, tc_cp, tc_versuch)));
                     }
                 }
         );
@@ -108,9 +102,8 @@ public class NotenListeController {
                 new EventHandler<CellEditEvent<Fach, Integer>>() {
                     @Override
                     public void handle(CellEditEvent<Fach, Integer> t) {
-                        ((Fach) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCp(t.getNewValue());
+                        t.getTableView().getItems().get(
+                                t.getTablePosition().getRow()).setCp(t.getNewValue());
                         lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
                     }
                 }
@@ -121,9 +114,8 @@ public class NotenListeController {
                 new EventHandler<CellEditEvent<Fach, Integer>>() {
                     @Override
                     public void handle(CellEditEvent<Fach, Integer> t) {
-                        ((Fach) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setVersuch(t.getNewValue());
+                        t.getTableView().getItems().get(
+                                t.getTablePosition().getRow()).setVersuch(t.getNewValue());
                     }
                 }
         );
@@ -137,6 +129,7 @@ public class NotenListeController {
                         notenTable.getItems().remove(selectedIndex);
                     }
                     lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
+                    lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_fach, tc_note, tc_cp, tc_versuch)));
                 }
             }
         });

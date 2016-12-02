@@ -1,11 +1,6 @@
 package de.fh.swf.inf.se.model;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 /**
  * Created by dsee on 28.11.2016.
@@ -15,9 +10,9 @@ import javafx.beans.property.StringProperty;
 public class Fach {
 
     private final StringProperty fachname;
+    private final Integer MAXVERSUCHE = 3;
     private DoubleProperty note;
     private IntegerProperty cp;
-    private final Integer MAXVERSUCHE  = 3;;
     private IntegerProperty versuch;
 
     public Fach() {
@@ -28,7 +23,7 @@ public class Fach {
         this.fachname = new SimpleStringProperty(fachname);
         this.note = new SimpleDoubleProperty(0.0);
         this.cp = new SimpleIntegerProperty(0);
-        this.versuch = new SimpleIntegerProperty(0);
+        this.versuch = new SimpleIntegerProperty(1);
     }
 
 
