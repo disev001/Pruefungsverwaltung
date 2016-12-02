@@ -8,7 +8,7 @@ import javafx.scene.control.TableView;
  */
 public final class FachRechnungen {
 
-    public static int rechneCP(TableView<Fach> tb, TableColumn<Fach,Integer> col) {
+    public static int rechneCP(TableView<Fach> tb, TableColumn<Fach, Integer> col) {
         final int[] ges = {0};
 
         tb.getItems().stream().forEach((o) -> {
@@ -18,14 +18,15 @@ public final class FachRechnungen {
         return ges[0];
     }
 
-    //
-    public static Double rechneNote(TableView<Fach> tb, TableColumn<Fach, String> colName,
-                                    TableColumn<Fach, Double> colNote, TableColumn<Fach, Integer> colCP,
-                                    TableColumn<Fach, Integer> colVersuch) {
+    //TODO: Formatierung von Double - Rechnung mit 2 dezimalstellen, ausgeben von 1
+    public static Double rechneNote(TableView<Fach> tb, TableColumn<Fach, Double> colNote, TableColumn<Fach, Integer> colCP) {
         final Double[] ges = {0.0};
+        final int gesCP = rechneCP(tb, colCP);
+        //TODO: Implementierung von Versuchupdate notwerndig
         tb.getItems().stream().forEach((o) -> {
             if ((colNote.getCellData(o)) <= 4.0) {
-                ges[0] += (colNote.getCellData(o));
+                double cp = (double) colCP.getCellData(o) / (double) gesCP;
+                ges[0] += colNote.getCellData(o) * cp;
             }
         });
 

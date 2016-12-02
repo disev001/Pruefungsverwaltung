@@ -92,7 +92,7 @@ public class NotenListeController {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setNote(t.getNewValue());
 
-                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_fach, tc_note, tc_cp, tc_versuch)));
+                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
                     }
                 }
         );
@@ -129,7 +129,7 @@ public class NotenListeController {
                         notenTable.getItems().remove(selectedIndex);
                     }
                     lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
-                    lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_fach, tc_note, tc_cp, tc_versuch)));
+                    lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
                 }
             }
         });
