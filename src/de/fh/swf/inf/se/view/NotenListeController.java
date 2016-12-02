@@ -1,7 +1,7 @@
 package de.fh.swf.inf.se.view;
 
 import de.fh.swf.inf.se.MainApp;
-import de.fh.swf.inf.se.model.Fach;
+import de.fh.swf.inf.se.model.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -98,6 +98,7 @@ public class NotenListeController {
                         ((Fach) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setNote(t.getNewValue());
+
                     }
                 }
         );
@@ -110,6 +111,7 @@ public class NotenListeController {
                         ((Fach) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setCp(t.getNewValue());
+                        lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
                     }
                 }
         );
@@ -134,6 +136,7 @@ public class NotenListeController {
                     if (keyEvent.getCode().equals(KeyCode.DELETE)) {
                         notenTable.getItems().remove(selectedIndex);
                     }
+                    lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
                 }
             }
         });
