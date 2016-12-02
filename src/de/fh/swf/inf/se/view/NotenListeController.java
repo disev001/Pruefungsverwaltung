@@ -76,13 +76,21 @@ public class NotenListeController {
                     @Override
                     //Ändern von Fachname
                     public void handle(CellEditEvent<Fach, String> t) {
+                        if (!t.getNewValue().equals("Neue Prüfung")) {
+                            notenListe.add(new Fach("Neue Prüfung"));
+                        } else notenTable.getItems().stream().forEach((o) -> {
+                            if (tc_fach.getCellData(o).equals(t.getNewValue()) &&)){
+                                t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow()).setVersuch(
+                                        t.getTableView().getItems().get(
+                                                t.getTablePosition().getRow()).getVersuch() + 1
+                                );
+                            }
+                        });
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setFachname(t.getNewValue());
                         //Ändern von Standartfachnamen erstellt neuen Eintrag
-                        if (!t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).getFachname().equals("Neue Prüfung")) {
-                            notenListe.add(new Fach("Neue Prüfung"));
-                        }
+
                     }
                 }
         );

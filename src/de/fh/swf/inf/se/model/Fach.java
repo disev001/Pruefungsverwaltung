@@ -23,7 +23,7 @@ public class Fach {
         this.fachname = new SimpleStringProperty(fachname);
         this.note = new SimpleDoubleProperty(0.0);
         this.cp = new SimpleIntegerProperty(0);
-        this.versuch = new SimpleIntegerProperty(1);
+        this.versuch = new SimpleIntegerProperty(0);
     }
 
 
