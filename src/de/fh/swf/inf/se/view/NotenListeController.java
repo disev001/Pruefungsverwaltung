@@ -67,7 +67,6 @@ public class NotenListeController {
         versuchEvents(); //überhaupt nötig?
         rowEvents();
     }
-
     private void fachnameEvents() {
         //Editiertbarkeit Fachname
         tc_fach.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -78,17 +77,9 @@ public class NotenListeController {
                     public void handle(CellEditEvent<Fach, String> t) {
                         if (!t.getNewValue().equals("Neue Prüfung")) {
                             notenListe.add(new Fach("Neue Prüfung"));
-                        } else notenTable.getItems().stream().forEach((o) -> {
-                            if (tc_fach.getCellData(o).equals(t.getNewValue()) &&)){
-                                t.getTableView().getItems().get(
-                                        t.getTablePosition().getRow()).setVersuch(
-                                        t.getTableView().getItems().get(
-                                                t.getTablePosition().getRow()).getVersuch() + 1
-                                );
-                            }
-                        });
+                        }
                         t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setFachname(t.getNewValue());
+                                t.getTablePosition().getRow()).setFachname(t.getNewValue(),notenTable);
                         //Ändern von Standartfachnamen erstellt neuen Eintrag
 
                     }
@@ -141,7 +132,7 @@ public class NotenListeController {
                 }
         );
     }
-
+//TODO: was passiert mit versuchen beim beim löschen?
     private void rowEvents() {
         // Zeilen löschen
         notenTable.setOnKeyPressed(new EventHandler<KeyEvent>() {

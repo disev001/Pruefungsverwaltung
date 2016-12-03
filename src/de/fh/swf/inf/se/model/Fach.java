@@ -2,6 +2,9 @@ package de.fh.swf.inf.se.model;
 
 import javafx.beans.property.*;
 
+import javafx.scene.control.Alert;
+import  javafx.scene.control.TableView;
+
 /**
  * Created by dsee on 28.11.2016.
  */
@@ -32,10 +35,23 @@ public class Fach {
         return fachname.get();
     }
 
-    public void setFachname(String fachname) {
-
-        this.fachname.set(fachname);
-
+    public void setFachname(String fachname,TableView<Fach> tb) {
+        final int[] i = {1};
+        tb.getItems().stream().forEach((o) ->{
+            if(o.getFachname().equals(fachname))
+            i[0]++;
+            });
+        try {
+            this.setVersuch(i[0]);
+            this.fachname.set(fachname);
+        }
+         catch (IllegalArgumentException e){
+             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+             alert.setTitle("INFO");
+             alert.setHeaderText(null);
+             alert.setContentText("Du kannst keine weiteren Noten für dieses Fach eintragen");
+             alert.showAndWait();
+         }
     }
 
     public StringProperty fachnameProperty() {
@@ -74,7 +90,9 @@ public class Fach {
     }
 
     public void setVersuch(int versuch) {
-        this.versuch.set(versuch);
+        if(versuch >= 1 && versuch <=3){
+            this.versuch.set(versuch);
+        }else throw new IllegalArgumentException();
     }
 
     public IntegerProperty versuchProperty() {
