@@ -1,9 +1,11 @@
 package de.fh.swf.inf.se.model;
 
 import javafx.beans.property.*;
-
+import  de.fh.swf.inf.se.InfoWindows;
 import javafx.scene.control.Alert;
-import  javafx.scene.control.TableView;
+import javafx.scene.control.TableView;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by dsee on 28.11.2016.
@@ -35,23 +37,25 @@ public class Fach {
         return fachname.get();
     }
 
-    public void setFachname(String fachname,TableView<Fach> tb) {
+    public void setFachname(String fachname, TableView<Fach> tb) {
         final int[] i = {1};
-        tb.getItems().stream().forEach((o) ->{
-            if(o.getFachname().equals(fachname))
-            i[0]++;
-            });
+        tb.getItems().stream().forEach((o) -> {
+            if (o.getFachname().equals(fachname))
+                if (o.getNote() == 5.0) {
+                    i[0]++;
+                } else {
+                    new InfoWindows("INFO",null,"Note ist "+o.getNote() +"\nBereits bestanden!");
+                    throw new IllegalArgumentException();
+                }
+
+        });
+
         try {
-            this.setVersuch(i[0]);
             this.fachname.set(fachname);
+            this.setVersuch(i[0]);
+        } catch (IllegalArgumentException e) {
+            new InfoWindows("INFO",null,"Du kannst keine weiteren Noten für das eingegebene Fach");
         }
-         catch (IllegalArgumentException e){
-             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-             alert.setTitle("INFO");
-             alert.setHeaderText(null);
-             alert.setContentText("Du kannst keine weiteren Noten für dieses Fach eintragen");
-             alert.showAndWait();
-         }
     }
 
     public StringProperty fachnameProperty() {
@@ -68,6 +72,7 @@ public class Fach {
     }
 
     public DoubleProperty noteProperty() {
+
         return note;
     }
 
@@ -90,9 +95,9 @@ public class Fach {
     }
 
     public void setVersuch(int versuch) {
-        if(versuch >= 1 && versuch <=3){
+        if (versuch >= 1 && versuch <= 3) {
             this.versuch.set(versuch);
-        }else throw new IllegalArgumentException();
+        } else throw new IllegalArgumentException();
     }
 
     public IntegerProperty versuchProperty() {

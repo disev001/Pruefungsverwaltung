@@ -45,10 +45,6 @@ public class NotenListeController {
     @SuppressWarnings("unused")
     private MainApp mainApp;
 
-    /**
-     * The constructor. The constructor is called before the initialize()
-     * method.
-     */
     public NotenListeController() {
 
     }
@@ -87,6 +83,7 @@ public class NotenListeController {
         );
     }
 
+    //TODO: Keine weiteren Noten wenn bereits bestanden!
     private void noteEvents() {
         //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -97,7 +94,7 @@ public class NotenListeController {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setNote(t.getNewValue());
 
-                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
+                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenListe)));
                     }
                 }
         );
@@ -112,8 +109,9 @@ public class NotenListeController {
                     public void handle(CellEditEvent<Fach, Integer> t) {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setCp(t.getNewValue());
-                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
-                        lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
+                        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenListe)));
+                        //lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
+                        lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
                     }
                 }
         );
@@ -143,19 +141,14 @@ public class NotenListeController {
                     if (keyEvent.getCode().equals(KeyCode.DELETE)) {
                         notenTable.getItems().remove(selectedIndex);
                     }
-                    lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenTable, tc_cp)));
-                    lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenTable, tc_note, tc_cp)));
+                    lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
+                    lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenListe)));
                 }
             }
         });
     }
 
 
-    /**
-     * Is called by the main application to give a reference back to itself.
-     *
-     * @param mainApp
-     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         setListe();

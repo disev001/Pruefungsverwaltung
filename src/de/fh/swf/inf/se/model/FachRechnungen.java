@@ -1,5 +1,6 @@
 package de.fh.swf.inf.se.model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -8,7 +9,7 @@ import javafx.scene.control.TableView;
  */
 public final class FachRechnungen {
 
-    public static int rechneCP(TableView<Fach> tb, TableColumn<Fach, Integer> col) {
+    /*public static int rechneCP(TableView<Fach> tb, TableColumn<Fach, Integer> col) {
         final int[] ges = {0};
 
         tb.getItems().stream().forEach((o) -> {
@@ -16,8 +17,16 @@ public final class FachRechnungen {
         });
 
         return ges[0];
-    }
+    } */
+    public static int rechneCP(ObservableList<Fach> liste) {
+        Integer cp = 0;
 
+        for (Fach data : liste) {
+            cp += data.getCp();
+        }
+        return cp;
+    }
+/*
     //TODO: Formatierung von Double - Rechnung mit 2 dezimalstellen, ausgeben von 1
     public static Double rechneNote(TableView<Fach> tb, TableColumn<Fach, Double> colNote, TableColumn<Fach, Integer> colCP) {
         final Double[] ges = {0.0};
@@ -30,6 +39,17 @@ public final class FachRechnungen {
             }
         });
         return ges[0];
+    } */
+
+    public static Double rechneNote(ObservableList<Fach> liste) {
+        Double ges = 0.0;
+        int gesCP = rechneCP(liste);
+        //TODO: Implementierung von Versuchupdate notwerndig
+        for (Fach data : liste) {
+            double cp = (double)data.getCp()/(double) gesCP;
+            ges += data.getNote() * cp;
+        }
+        return ges;
     }
 
     public void FachRechnungen() {
