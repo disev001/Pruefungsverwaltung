@@ -1,17 +1,16 @@
 package de.fh.swf.inf.se.model;
 
 import javafx.beans.property.*;
-import  de.fh.swf.inf.se.InfoWindows;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableView;
-
-import java.text.DecimalFormat;
+import de.fh.swf.inf.se.InfoWindows;
+import javafx.collections.ObservableList;
 
 /**
  * Created by dsee on 28.11.2016.
  */
 
+
 //TODO: Abfangen von Falschen eingaben wie ungültige Noten oder negativen CP
+
 public class Fach {
 
     private final StringProperty fachname;
@@ -19,16 +18,15 @@ public class Fach {
     private DoubleProperty note;
     private IntegerProperty cp;
     private IntegerProperty versuch;
+    private ObservableList <Fach> liste;
 
-    public Fach() {
-        this(null);
-    }
 
-    public Fach(String fachname) {
+    public Fach(String fachname, ObservableList <Fach> liste) {
         this.fachname = new SimpleStringProperty(fachname);
         this.note = new SimpleDoubleProperty(0.0);
         this.cp = new SimpleIntegerProperty(0);
         this.versuch = new SimpleIntegerProperty(0);
+        this.liste = liste;
     }
 
 
@@ -37,25 +35,36 @@ public class Fach {
         return fachname.get();
     }
 
-    public void setFachname(String fachname, TableView<Fach> tb) {
-        final int[] i = {1};
-        tb.getItems().stream().forEach((o) -> {
-            if (o.getFachname().equals(fachname))
-                if (o.getNote() == 5.0) {
-                    i[0]++;
+    public void setFachname(String fachname) {
+        int i = 1;
+        int oldCP = 0;
+        for (Fach data : liste) {
+            if (data.getFachname().equals(fachname))
+                if (data.getNote() == 5.0) {
+                    oldCP = data.getCp();
+                    i++;
                 } else {
-                    new InfoWindows("INFO",null,"Note ist "+o.getNote() +"\nBereits bestanden!");
+                    new InfoWindows("INFO", null, "Note ist " + data.getNote() + "\nBereits bestanden!");
                     throw new IllegalArgumentException();
                 }
 
-        });
+        }
 
         try {
             this.fachname.set(fachname);
-            this.setVersuch(i[0]);
+            this.setVersuch(i);
+            this.setCp(oldCP);
         } catch (IllegalArgumentException e) {
-            new InfoWindows("INFO",null,"Du kannst keine weiteren Noten für das eingegebene Fach");
+            new InfoWindows("INFO", null, "Du kannst keine weiteren Noten für das eingegebene Fach");
         }
+    }
+
+    private void setListe(ObservableList <Fach> liste) {
+        this.liste = liste;
+    }
+
+    private ObservableList <Fach> getListe() {
+        return liste;
     }
 
     public StringProperty fachnameProperty() {
@@ -68,11 +77,15 @@ public class Fach {
     }
 
     public void setNote(Double note) {
-        this.note.set(note);
+        if (!(note == 1.0 || note == 1.3 || note == 1.7
+                || note == 2.0 || note == 2.3 || note == 2.7
+                || note == 3.0 || note == 3.3 || note == 3.7
+                || note == 4.0 || note == 5.0)) {
+            new InfoWindows("INFO", null, "Bitte note im gültigen Notenbereich halten");
+        } else this.note.set(note);
     }
 
     public DoubleProperty noteProperty() {
-
         return note;
     }
 
