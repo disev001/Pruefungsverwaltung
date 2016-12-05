@@ -1,8 +1,10 @@
 package de.fh.swf.inf.se.model;
 
-import javafx.beans.property.*;
 import de.fh.swf.inf.se.InfoWindows;
+import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Created by dsee on 28.11.2016.
@@ -11,6 +13,7 @@ import javafx.collections.ObservableList;
 
 //TODO: Abfangen von Falschen eingaben wie ungültige Noten oder negativen CP
 
+@XmlType(propOrder = {"fachname", "note", "cp", "versuch"})
 public class Fach {
 
     private final StringProperty fachname;
@@ -18,10 +21,13 @@ public class Fach {
     private DoubleProperty note;
     private IntegerProperty cp;
     private IntegerProperty versuch;
-    private ObservableList <Fach> liste;
+    private ObservableList<Fach> liste;
 
+    public Fach() {
+        this.fachname = new SimpleStringProperty("Neuer Fach");
+    }
 
-    public Fach(String fachname, ObservableList <Fach> liste) {
+    public Fach(String fachname, ObservableList<Fach> liste) {
         this.fachname = new SimpleStringProperty(fachname);
         this.note = new SimpleDoubleProperty(0.0);
         this.cp = new SimpleIntegerProperty(0);
@@ -59,12 +65,12 @@ public class Fach {
         }
     }
 
-    private void setListe(ObservableList <Fach> liste) {
-        this.liste = liste;
+    private ObservableList<Fach> getListe() {
+        return liste;
     }
 
-    private ObservableList <Fach> getListe() {
-        return liste;
+    private void setListe(ObservableList<Fach> liste) {
+        this.liste = liste;
     }
 
     public StringProperty fachnameProperty() {

@@ -48,6 +48,7 @@ public class NotenListeController {
     private Button btn_extra;
     @SuppressWarnings("unused")
     private MainApp mainApp;
+    private File f;
 
     public NotenListeController() {
 
@@ -179,26 +180,26 @@ public class NotenListeController {
      */
     @FXML
     private void handleOpen() {
-       /* FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
                 "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter); */
+        fileChooser.getExtensionFilters().add(extFilter);
 
         // Show open file dialog
-        //File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
         File f = null;
         try {
             String path = new File(".").getCanonicalPath();
-             f = new File(path+"\\"+"notenliste.xml");
+            f = new File(path + "\\" + "notenliste.xml");
 
         } catch (Exception e) {
             new InfoWindows("ERROR", "Datei nicht vorhanden", "notenliste.xml im Ausführungsverzeichniss nicht vorhanden");
         }
         if (f != null) {
-            mainApp.loadDataFromFile(f);
+            mainApp.loadDataFromFile(file);
         }
     }
 

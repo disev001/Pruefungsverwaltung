@@ -1,7 +1,7 @@
 package de.fh.swf.inf.se;
 
-import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.controller.NotenListeController;
+import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.model.NotenListeWrapper;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import javax.sound.midi.MidiDevice;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -33,6 +32,7 @@ public class MainApp extends Application {
 
     public MainApp() {
         // 1.Eintrag
+
         notenListe.add(new Fach("Neue Prüfung",notenListe ));
     }
 
@@ -133,6 +133,7 @@ public class MainApp extends Application {
             setFilePath(file);
 
         } catch (Exception e) { // catches ANY exception
+            System.out.println(e);
             new InfoWindows("Error","Datei nicht geladen","Datei konnte nicht geladen werden");
         }
     }
