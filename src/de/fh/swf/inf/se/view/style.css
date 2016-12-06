@@ -1,0 +1,4 @@
+.hideRow
+{-fx-cell-size: 0;
+    -fx-text-fill: transparent;
+}

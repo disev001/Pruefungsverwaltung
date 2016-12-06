@@ -63,12 +63,12 @@ public class NotenListeController {
         tc_cp.setCellValueFactory(cellData -> cellData.getValue().creditPointsProperty().asObject());
         tc_versuch.setCellValueFactory(cellData -> cellData.getValue().versuchProperty().asObject());
 
+
         fachnameEvents();
         noteEvents();
         cpEvents();
         versuchEvents();
         rowEvents();
-
     }
 
     private void fachnameEvents() {
@@ -101,7 +101,7 @@ public class NotenListeController {
                     public void handle(CellEditEvent<Fach, Double> t) {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setNote(t.getNewValue());
-                        lbl_note.setText(FachRechnungen.rechneNote(notenListe));
+                        setLabels();
                     }
                 }
         );
@@ -117,7 +117,7 @@ public class NotenListeController {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setCreditPoints(t.getNewValue());
                         lbl_note.setText(FachRechnungen.rechneNote(notenListe));
-                        lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
+                        setLabels();
                     }
                 }
         );
@@ -148,8 +148,8 @@ public class NotenListeController {
                     if (keyEvent.getCode().equals(KeyCode.DELETE)) {
                         notenTable.getItems().remove(selectedIndex);
                     }
-                    lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
-                    lbl_note.setText(FachRechnungen.rechneNote(notenListe));
+                    setLabels();
+
                 }
             }
         });
@@ -194,4 +194,11 @@ public class NotenListeController {
     private void handleAbschlussnoten() {
         this.mainApp.showAbschluss(this.notenListe);
     }
+
+    public void setLabels(){
+        lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
+        lbl_note.setText(FachRechnungen.rechneNote(notenListe));
+    }
+
+
 }

@@ -16,6 +16,12 @@ public class Abschlussnoten extends Fach {
     }
 
 
+    public Abschlussnoten(String fach, Double note){
+        super();
+        this.setFach(fach);
+        this.setNote(note);
+    }
+
     @Override
     public void setFach(String fach) {
         super.setFach(fach);

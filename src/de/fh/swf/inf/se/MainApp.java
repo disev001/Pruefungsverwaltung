@@ -64,6 +64,7 @@ public class MainApp extends Application {
             controller.setMainApp(this);
             //TODO: Wenn datei nicht existiert?
             handleOpen();
+            controller.setLabels();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -218,9 +219,11 @@ public class MainApp extends Application {
             dialogStage.setScene(scene);
 
             // Set the person into the controller.
+
             AbschlussnotenController controller = loader.getController();
+            controller.setList(notenListe);
             controller.setDialogStage(dialogStage);
-             controller.setList(list);
+
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
