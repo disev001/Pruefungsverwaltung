@@ -26,12 +26,12 @@
                       <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Abschlussarbeit:">
+                        <Label text="Abschlussarbeit">
                            <GridPane.margin>
                               <Insets left="50.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Kolloquium:" GridPane.rowIndex="1">
+                        <Label text="Kolloquium" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="50.0" />
                            </GridPane.margin>

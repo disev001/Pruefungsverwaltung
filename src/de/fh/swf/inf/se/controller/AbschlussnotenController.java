@@ -1,5 +1,7 @@
 package de.fh.swf.inf.se.controller;
 
+import de.fh.swf.inf.se.model.Fach;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,8 +24,10 @@ public class AbschlussnotenController {
     private Button btnCancel;
     @FXML
     private Button btnOK;
+
     private Stage dialogStage;
     boolean okClicked;
+    ObservableList<Fach> list;
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -48,5 +52,9 @@ public class AbschlussnotenController {
     @FXML
     private void handleCancel() {
         dialogStage.close();
+    }
+
+    public void setList(ObservableList<Fach> list) {
+        this.list = list;
     }
 }

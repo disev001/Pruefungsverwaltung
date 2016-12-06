@@ -2,17 +2,21 @@ package de.fh.swf.inf.se;
 
 import de.fh.swf.inf.se.controller.AbschlussnotenController;
 import de.fh.swf.inf.se.controller.NotenListeController;
+import de.fh.swf.inf.se.model.Abschlussnoten;
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.model.NotenListeWrapper;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -35,6 +39,7 @@ public class MainApp extends Application {
     private AnchorPane rootLayout;
 
     public MainApp() {
+
     }
 
     public static void main(String[] args) {
@@ -62,6 +67,18 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //Fenster Schließen per Plattformabhängigem Closebutton
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.exit(0);
+                    }
+                });
+            }
+        });
     }
 
     public ObservableList<Fach> getNotenListe() {
@@ -120,6 +137,7 @@ public class MainApp extends Application {
             primaryStage.setTitle("Notenliste");
         }
     }
+
     public void loadDataFromFile(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(NotenListeWrapper.class);
@@ -135,10 +153,12 @@ public class MainApp extends Application {
             // Save the file path to the registry.
             setFilePath(file);
 
+
         } catch (Exception e) { // catches ANY exception
             System.out.println(e);
-            notenListe.add(new Fach("Neue Prüfung",notenListe ));
-            new InfoWindows("Error","Datei nicht geladen","Datei"+ file.getAbsolutePath()+" konnte nicht geladen werden");
+            notenListe.add(new Fach("Neue Prüfung", notenListe));
+
+            new InfoWindows("Error", "Datei nicht geladen", "Datei" + file.getAbsolutePath() + " konnte nicht geladen werden");
         }
     }
 
@@ -164,9 +184,10 @@ public class MainApp extends Application {
             // Save the file path to the registry.
             setFilePath(file);
         } catch (Exception e) { // catches ANY exception
-            new InfoWindows("Error","Datei nicht gespeichert","Datei konnte nicht gespeichert werden");
+            new InfoWindows("Error", "Datei nicht gespeichert", "Datei konnte nicht gespeichert werden");
         }
     }
+
     private void handleOpen() {
         File f = null;
         try {
@@ -174,9 +195,7 @@ public class MainApp extends Application {
             f = new File(path + "/notenliste.xml");
 
         } catch (Exception e) {
-
             new InfoWindows("ERROR", "Datei nicht vorhanden", "notenliste.xml im Ausführungsverzeichniss nicht vorhanden");
-
         }
         if (f != null) {
             loadDataFromFile(f);
@@ -201,7 +220,7 @@ public class MainApp extends Application {
             // Set the person into the controller.
             AbschlussnotenController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-           // controller.setPerson(list);
+             controller.setList(list);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

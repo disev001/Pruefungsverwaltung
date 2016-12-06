@@ -22,7 +22,8 @@ public class Fach {
     private DoubleProperty note;
     private IntegerProperty creditPoints;
     private IntegerProperty versuch;
-
+  //  private DoubleProperty abschlussarbeit;
+    //  private DoubleProperty kolloquium;
 
     public Fach() {
         this.fach = new SimpleStringProperty("");
@@ -31,7 +32,7 @@ public class Fach {
         this.versuch = new SimpleIntegerProperty(0);
     }
 
-    public Fach(String fach,ObservableList<Fach> noteliste) {
+    public Fach(String fach, ObservableList<Fach> noteliste) {
         this.fach = new SimpleStringProperty(fach);
         this.note = new SimpleDoubleProperty(0.0);
         this.creditPoints = new SimpleIntegerProperty(0);
@@ -42,6 +43,7 @@ public class Fach {
     public ObservableList<Fach> getNoteliste() {
         return noteliste;
     }
+
     public String getFach() {
         return fach.get();
     }
@@ -61,9 +63,7 @@ public class Fach {
                         new InfoWindows("INFO", null, "Note ist " + data.getNote() + "\nBereits bestanden!");
                         throw new IllegalArgumentException();
                     }
-
             }
-
             try {
                 this.fach.set(fach);
                 this.setVersuch(i);
@@ -89,6 +89,9 @@ public class Fach {
                 || note == 4.0 || note == 5.0)) {
             new InfoWindows("INFO", null, "Bitte note im gültigen Notenbereich halten");
         } else this.note.set(note);
+        if (note == 5.0) {
+            noteliste.add(new Fach(getFach(), this.noteliste));
+        }
     }
 
     public DoubleProperty noteProperty() {
@@ -121,5 +124,30 @@ public class Fach {
     public IntegerProperty versuchProperty() {
         return versuch;
     }
+/*
+    public double getKolloquium() {
+        return kolloquium.get();
+    }
 
+    public DoubleProperty kolloquiumProperty() {
+        return kolloquium;
+    }
+
+    public void setKolloquium(double kolloquium) {
+        this.kolloquium.set(kolloquium);
+    }
+
+
+    public double getAbschlussarbeit() {
+        return abschlussarbeit.get();
+    }
+
+    public DoubleProperty abschlussarbeitProperty() {
+        return abschlussarbeit;
+    }
+
+    public void setAbschlussarbeit(double abschlussarbeit) {
+        this.abschlussarbeit.set(abschlussarbeit);
+    }
+    */
 }
