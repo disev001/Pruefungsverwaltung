@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<AnchorPane maxHeight="520200.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.fh.swf.inf.se.controller.AbschlussnotenController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="520200.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0"
+            prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="de.fh.swf.inf.se.controller.AbschlussnotenController">
    <children>
       <SplitPane dividerPositions="0.6515151515151515" layoutX="15.0" layoutY="-14.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -36,8 +32,10 @@
                               <Insets left="50.0" />
                            </GridPane.margin>
                         </Label>
-                        <ComboBox fx:id="cbK" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox id="cbAB" fx:id="cbAB" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" GridPane.columnIndex="1" />
+                         <ComboBox fx:id="cbK" maxWidth="102.0" minWidth="60.0" prefHeight="25.0" prefWidth="102.0"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                         <ComboBox id="cbAB" fx:id="cbAB" maxWidth="105.0" minWidth="60.0" prefHeight="25.0"
+                                   prefWidth="105.0" GridPane.columnIndex="1"/>
                      </children>
                      <opaqueInsets>
                         <Insets top="50.0" />
@@ -63,9 +61,16 @@
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
+                            <font>
+                                <Font size="11.0"/>
+                            </font>
                         </Label>
                         <Label id="lblAn" fx:id="lblAn" GridPane.columnIndex="1" />
-                        <Label text="Gesammt CP:" GridPane.columnIndex="2" />
+                         <Label text="Gesammt CP:" GridPane.columnIndex="2">
+                             <font>
+                                 <Font size="11.0"/>
+                             </font>
+                         </Label>
                         <Label id="lblGCP" fx:id="lblGCP" GridPane.columnIndex="3" />
                         <Button id="btnCancel" fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="65.0" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Button id="btnOK" fx:id="btnOK" mnemonicParsing="false" onAction="#handleOk" prefHeight="25.0" prefWidth="88.0" text="OK" GridPane.columnIndex="1" GridPane.rowIndex="1" />
