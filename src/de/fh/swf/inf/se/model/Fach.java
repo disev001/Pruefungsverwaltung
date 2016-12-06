@@ -100,9 +100,6 @@ public class Fach {
                 || note == 4.0 || note == 5.0)) {
             new InfoWindows("INFO", null, "Bitte note im gültigen Notenbereich halten");
         } else this.note.set(note);
-        if (note == 5.0) {
-            noteliste.add(new Fach(getFach(), this.noteliste));
-        }
     }
 
     public DoubleProperty noteProperty() {

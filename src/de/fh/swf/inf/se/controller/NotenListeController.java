@@ -197,7 +197,7 @@ public class NotenListeController {
 
     public void setLabels(){
         lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
-        lbl_note.setText(FachRechnungen.rechneNote(notenListe));
+        lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenListe)));
     }
 
 
