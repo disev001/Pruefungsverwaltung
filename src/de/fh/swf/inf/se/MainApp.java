@@ -9,12 +9,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
@@ -31,9 +33,6 @@ public class MainApp extends Application {
     private AnchorPane rootLayout;
 
     public MainApp() {
-        // 1.Eintrag
-
-        notenListe.add(new Fach("Neue Prüfung",notenListe ));
     }
 
     public static void main(String[] args) {
@@ -56,7 +55,8 @@ public class MainApp extends Application {
             primaryStage.show();
             NotenListeController controller = loader.getController();
             controller.setMainApp(this);
-
+            //TODO: Wenn datei nicht existiert?
+            handleOpen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,17 +124,19 @@ public class MainApp extends Application {
             Unmarshaller um = context.createUnmarshaller();
 
             // Reading XML from the file and unmarshalling.
-            NotenListeWrapper wrapper = (NotenListeWrapper) um.unmarshal(file);
-
             notenListe.clear();
-            notenListe.addAll(wrapper.getFach());
+            NotenListeWrapper wrapper = (NotenListeWrapper) um.unmarshal(new FileReader(file));
+
+
+            notenListe.addAll(wrapper.getNoteliste());
 
             // Save the file path to the registry.
             setFilePath(file);
 
         } catch (Exception e) { // catches ANY exception
             System.out.println(e);
-            new InfoWindows("Error","Datei nicht geladen","Datei konnte nicht geladen werden");
+            notenListe.add(new Fach("Neue Prüfung",notenListe ));
+            new InfoWindows("Error","Datei nicht geladen","Datei"+ file.getAbsolutePath()+" konnte nicht geladen werden");
         }
     }
 
@@ -152,7 +154,7 @@ public class MainApp extends Application {
 
             // Wrapping our person data.
             NotenListeWrapper wrapper = new NotenListeWrapper();
-            wrapper.setNoten(notenListe);
+            wrapper.setNoteliste(notenListe);
 
             // Marshalling and saving XML to the file.
             m.marshal(wrapper, file);
@@ -161,6 +163,21 @@ public class MainApp extends Application {
             setFilePath(file);
         } catch (Exception e) { // catches ANY exception
             new InfoWindows("Error","Datei nicht gespeichert","Datei konnte nicht gespeichert werden");
+        }
+    }
+    private void handleOpen() {
+        File f = null;
+        try {
+            String path = new File(".").getCanonicalPath();
+            f = new File(path + "/notenliste.xml");
+
+        } catch (Exception e) {
+
+            new InfoWindows("ERROR", "Datei nicht vorhanden", "notenliste.xml im Ausführungsverzeichniss nicht vorhanden");
+
+        }
+        if (f != null) {
+            loadDataFromFile(f);
         }
     }
 }
