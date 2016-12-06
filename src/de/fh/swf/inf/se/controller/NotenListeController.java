@@ -58,9 +58,9 @@ public class NotenListeController {
     @FXML
     private void initialize() {
         // Initialisierung, wird vom fxml loader aufgerufen
-        tc_fach.setCellValueFactory(cellData -> cellData.getValue().fachnameProperty());
+        tc_fach.setCellValueFactory(cellData -> cellData.getValue().fachProperty());
         tc_note.setCellValueFactory(cellData -> cellData.getValue().noteProperty().asObject());
-        tc_cp.setCellValueFactory(cellData -> cellData.getValue().cpProperty().asObject());
+        tc_cp.setCellValueFactory(cellData -> cellData.getValue().creditPointsProperty().asObject());
         tc_versuch.setCellValueFactory(cellData -> cellData.getValue().versuchProperty().asObject());
 
         fachnameEvents();
@@ -83,7 +83,7 @@ public class NotenListeController {
                             notenListe.add(new Fach("Neue Prüfung", notenListe));
                         }
                         t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setFachname(t.getNewValue());
+                                t.getTablePosition().getRow()).setFach(t.getNewValue());
                         //Ändern von Standartfachnamen erstellt neuen Eintrag
 
                     }
@@ -101,7 +101,6 @@ public class NotenListeController {
                     public void handle(CellEditEvent<Fach, Double> t) {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setNote(t.getNewValue());
-
                         lbl_note.setText(FachRechnungen.rechneNote(notenListe));
                     }
                 }
@@ -116,7 +115,7 @@ public class NotenListeController {
                     @Override
                     public void handle(CellEditEvent<Fach, Integer> t) {
                         t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setCp(t.getNewValue());
+                                t.getTablePosition().getRow()).setCreditPoints(t.getNewValue());
                         lbl_note.setText(FachRechnungen.rechneNote(notenListe));
                         lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
                     }
@@ -176,34 +175,6 @@ public class NotenListeController {
     }
 
     /**
-     * Opens a FileChooser to let the user select an address book to load.
-     */
-    @FXML
-    private void handleOpen() {
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        // Show open file dialog
-        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-
-        File f = null;
-        try {
-            String path = new File(".").getCanonicalPath();
-            f = new File(path + "\\" + "notenliste.xml");
-
-        } catch (Exception e) {
-            new InfoWindows("ERROR", "Datei nicht vorhanden", "notenliste.xml im Ausführungsverzeichniss nicht vorhanden");
-        }
-        if (f != null) {
-            mainApp.loadDataFromFile(file);
-        }
-    }
-
-    /**
      * Saves the file to the person file that is currently open. If there is no
      * open file, the "save as" dialog is shown.
      */
@@ -212,33 +183,15 @@ public class NotenListeController {
         File f = mainApp.getFilePath();
         if (f != null) {
             mainApp.saveDataToFile(f);
-        } else {
-            handleSaveAs();
         }
     }
 
     /**
-     * Opens a FileChooser to let the user select a file to save to.
+     * Saves the file to the person file that is currently open. If there is no
+     * open file, the "save as" dialog is shown.
      */
     @FXML
-    private void handleSaveAs() {
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        // Show save file dialog
-        File f = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-
-        if (f != null) {
-            // Make sure it has the correct extension
-            if (!f.getPath().endsWith(".xml")) {
-                f = new File(f.getPath() + ".xml");
-            }
-            mainApp.saveDataToFile(f);
-        }
+    private void handleAbschlussnoten() {
+        this.mainApp.showAbschluss(this.notenListe);
     }
-
 }

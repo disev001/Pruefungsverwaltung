@@ -1,8 +1,6 @@
 package de.fh.swf.inf.se.model;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 import java.text.DecimalFormat;
 
@@ -15,8 +13,8 @@ public final class FachRechnungen {
         Integer cp = 0;
 
         for (Fach data : liste) {
-            if(data.getNote()>=1.0 && data.getNote()<= 4.0 && data.getCp()!= 0)
-            cp += data.getCp();
+            if(data.getNote()>=1.0 && data.getNote()<= 4.0 && data.getCreditPoints()!= 0)
+            cp += data.getCreditPoints();
         }
         return cp;
     }
@@ -28,7 +26,7 @@ public final class FachRechnungen {
         int gesCP = rechneCP(liste);
         //TODO: Implementierung von Versuchupdate notwerndig
         for (Fach data : liste) {
-            double cp = (double)data.getCp()/(double) gesCP;
+            double cp = (double)data.getCreditPoints()/(double) gesCP;
             if(data.getNote()>=1.0 && data.getNote()<= 4.0)
             ges += data.getNote() * cp;
         }

@@ -1,23 +1,22 @@
 package de.fh.swf.inf.se.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-/**
- * Created by dsee on 04.12.2016.
- */
+import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="notenliste")
+@XmlRootElement(name = "Noteneintrag")
 public class NotenListeWrapper {
-    private List<Fach> noten;
 
-    @XmlElement(name="note")
-    public  List<Fach> getFach(){
-        return noten;
+    private List<Fach> data;
+
+    public List<Fach> getNoteliste()
+    {
+        return data;
     }
 
-    public void setNoten(List<Fach> notenliste){
-        this.noten = notenliste;
+    public void setNoteliste(List<Fach> data)
+    {
+        this.data = data;
     }
+
 }

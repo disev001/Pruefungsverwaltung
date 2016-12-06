@@ -1,5 +1,6 @@
 package de.fh.swf.inf.se;
 
+import de.fh.swf.inf.se.controller.AbschlussnotenController;
 import de.fh.swf.inf.se.controller.NotenListeController;
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.model.NotenListeWrapper;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.xml.bind.JAXBContext;
@@ -178,6 +180,36 @@ public class MainApp extends Application {
         }
         if (f != null) {
             loadDataFromFile(f);
+        }
+    }
+
+    public boolean showAbschluss(ObservableList<Fach> list) {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Abschlussnoten.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Abschlussnoten");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            AbschlussnotenController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+           // controller.setPerson(list);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -2,88 +2,88 @@ package de.fh.swf.inf.se.model;
 
 import de.fh.swf.inf.se.InfoWindows;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * Created by dsee on 28.11.2016.
  */
 
-
-//TODO: Abfangen von Falschen eingaben wie ungültige Noten oder negativen CP
-
-@XmlType(propOrder = {"fachname", "note", "cp", "versuch"})
+@XmlType(propOrder = {"fach", "note", "creditPoints", "versuch"})
 public class Fach {
 
-    private final StringProperty fachname;
-    private final Integer MAXVERSUCHE = 3;
+
+    private ObservableList<Fach> noteliste = FXCollections.observableArrayList();
+
+    private StringProperty fach;
     private DoubleProperty note;
-    private IntegerProperty cp;
+    private IntegerProperty creditPoints;
     private IntegerProperty versuch;
-    private ObservableList<Fach> liste;
+
 
     public Fach() {
-        this.fachname = new SimpleStringProperty("Neuer Fach");
-    }
-
-    public Fach(String fachname, ObservableList<Fach> liste) {
-        this.fachname = new SimpleStringProperty(fachname);
+        this.fach = new SimpleStringProperty("");
         this.note = new SimpleDoubleProperty(0.0);
-        this.cp = new SimpleIntegerProperty(0);
+        this.creditPoints = new SimpleIntegerProperty(0);
         this.versuch = new SimpleIntegerProperty(0);
-        this.liste = liste;
     }
 
-
-    // Fachname
-    public String getFachname() {
-        return fachname.get();
+    public Fach(String fach,ObservableList<Fach> noteliste) {
+        this.fach = new SimpleStringProperty(fach);
+        this.note = new SimpleDoubleProperty(0.0);
+        this.creditPoints = new SimpleIntegerProperty(0);
+        this.versuch = new SimpleIntegerProperty(0);
+        this.noteliste = noteliste;
     }
 
-    public void setFachname(String fachname) {
+    public ObservableList<Fach> getNoteliste() {
+        return noteliste;
+    }
+    public String getFach() {
+        return fach.get();
+    }
+
+    public void setFach(String fach) {
         int i = 1;
         int oldCP = 0;
-        for (Fach data : liste) {
-            if (data.getFachname().equals(fachname))
-                if (data.getNote() == 5.0) {
-                    oldCP = data.getCp();
-                    i++;
-                } else {
-                    new InfoWindows("INFO", null, "Note ist " + data.getNote() + "\nBereits bestanden!");
-                    throw new IllegalArgumentException();
-                }
+        if (noteliste == null)
+            this.fach.set(fach);
+        else {
+            for (Fach data : noteliste) {
+                if (data.getFach().equals(fach))
+                    if (data.getNote() == 5.0) {
+                        oldCP = data.getCreditPoints();
+                        i++;
+                    } else {
+                        new InfoWindows("INFO", null, "Note ist " + data.getNote() + "\nBereits bestanden!");
+                        throw new IllegalArgumentException();
+                    }
 
+            }
+
+            try {
+                this.fach.set(fach);
+                this.setVersuch(i);
+                this.setCreditPoints(oldCP);
+            } catch (IllegalArgumentException e) {
+                new InfoWindows("INFO", null, "Du kannst keine weiteren Noten für das eingegebene Fach");
+            }
         }
-
-        try {
-            this.fachname.set(fachname);
-            this.setVersuch(i);
-            this.setCp(oldCP);
-        } catch (IllegalArgumentException e) {
-            new InfoWindows("INFO", null, "Du kannst keine weiteren Noten für das eingegebene Fach");
-        }
     }
 
-    private ObservableList<Fach> getListe() {
-        return liste;
+    public StringProperty fachProperty() {
+        return fach;
     }
 
-    private void setListe(ObservableList<Fach> liste) {
-        this.liste = liste;
-    }
-
-    public StringProperty fachnameProperty() {
-        return fachname;
-    }
-
-    // Note
     public Double getNote() {
         return note.get();
     }
 
     public void setNote(Double note) {
-        if (!(note == 1.0 || note == 1.3 || note == 1.7
+        if (!(note == 0.0 || note == 1.0 || note == 1.3 || note == 1.7
                 || note == 2.0 || note == 2.3 || note == 2.7
                 || note == 3.0 || note == 3.3 || note == 3.7
                 || note == 4.0 || note == 5.0)) {
@@ -95,26 +95,25 @@ public class Fach {
         return note;
     }
 
-    // CP
-    public int getCp() {
-        return cp.get();
+
+    public Integer getCreditPoints() {
+        return creditPoints.get();
     }
 
-    public void setCp(int cp) {
-        this.cp.set(cp);
+    public void setCreditPoints(Integer creditPoints) {
+        this.creditPoints.set(creditPoints);
     }
 
-    public IntegerProperty cpProperty() {
-        return cp;
+    public IntegerProperty creditPointsProperty() {
+        return creditPoints;
     }
 
-    // versuch
-    public int getVersuch() {
+    public Integer getVersuch() {
         return versuch.get();
     }
 
-    public void setVersuch(int versuch) {
-        if (versuch >= 1 && versuch <= 3) {
+    public void setVersuch(Integer versuch) {
+        if (versuch >= 0 && versuch <= 3) {
             this.versuch.set(versuch);
         } else throw new IllegalArgumentException();
     }
@@ -123,8 +122,4 @@ public class Fach {
         return versuch;
     }
 
-    // max versuche
-    public Integer getMaxVersuche() {
-        return MAXVERSUCHE;
-    }
 }
