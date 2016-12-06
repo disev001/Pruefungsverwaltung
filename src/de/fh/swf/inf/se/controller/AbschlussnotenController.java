@@ -1,6 +1,5 @@
 package de.fh.swf.inf.se.controller;
 
-import de.fh.swf.inf.se.model.Abschlussnoten;
 import de.fh.swf.inf.se.model.Fach;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +34,7 @@ public class AbschlussnotenController {
     boolean okClicked;
     ObservableList<Fach> list;
     Double abschluss;
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
@@ -64,12 +64,23 @@ public class AbschlussnotenController {
         //Auswahl Events
 
     }
-    private void setAbschlussnote(){
-        if (!cbAB.getValue().equals(0.0) ) list.add(new Abschlussnoten("Abschlussarbeit", cbAB.getValue()));
+
+    private void setAbschlussnote() {
+        if (!cbAB.getValue().equals(0.0)) {
+            for (Fach a : list) {
+                a.setAbschlussNote(cbAB.getValue());
+                a.setAbschlussCP(30);
+
+            }
+        }
     }
-    private void setKolloquium(){
-        if (!cbK.getValue().equals(0.0) ) {
-            list.add(new Abschlussnoten("Kolloquium",cbK.getValue()));
+
+    private void setKolloquium() {
+        if (!cbK.getValue().equals(0.0)) {
+            for (Fach a : list) {
+                a.setKolloquiumNote(cbAB.getValue());
+                a.setKolloquiumCP(5);
+            }
         }
     }
 
@@ -80,18 +91,23 @@ public class AbschlussnotenController {
 
     public void setList(ObservableList<Fach> list) {
         this.list = list;
-        for (Fach a : list)
-        {
-            if (a.getFach().equals("Abschlussnote")){
-                cbAB.setValue(a.getNote());
+        boolean result = list.stream().anyMatch(obj -> {
+            int i = 0;
+            if (obj.getAbschlussNote() > 0.0) {
+                cbAB.setValue(obj.getAbschlussNote());
+                i++;
             }
-            if (a.getFach().equals("Kolloquium")){
-                cbK.setValue(a.getNote());
+            if (obj.getAbschlussNote() > 0.0) {
+                cbK.setValue(obj.getKolloquiumNote());
+                i++;
             }
-            else {
-                cbAB.setValue(0.0);
-                cbK.setValue(0.0);
-            }
+            if (i > 0) {
+                return true;
+            } else return false;
+        });
+        if (!result) {
+            cbAB.setValue(0.0);
+            cbK.setValue(0.0);
         }
     }
 }

@@ -2,7 +2,6 @@ package de.fh.swf.inf.se;
 
 import de.fh.swf.inf.se.controller.AbschlussnotenController;
 import de.fh.swf.inf.se.controller.NotenListeController;
-import de.fh.swf.inf.se.model.Abschlussnoten;
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.model.NotenListeWrapper;
 import javafx.application.Application;
