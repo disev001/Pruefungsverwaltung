@@ -19,12 +19,9 @@ public final class FachRechnungen {
         return cp;
     }
 
-    //TODO: Formatierung von Double - Rechnung mit 2 dezimalstellen, ausgeben von 1
-
     public static String rechneNote(ObservableList<Fach> liste) {
         Double ges = 0.0;
         int gesCP = rechneCP(liste);
-        //TODO: Implementierung von Versuchupdate notwerndig
         for (Fach data : liste) {
             double cp = (double)data.getCreditPoints()/(double) gesCP;
             if(data.getNote()>=1.0 && data.getNote()<= 4.0)
