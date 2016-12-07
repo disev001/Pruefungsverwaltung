@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * Created by dsee on 28.11.2016.
+ * Datenklasse für Einträge
  */
 
 @XmlType(propOrder = {"fach", "note", "creditPoints", "versuch", "abschlussNote", "abschlussCP", "kolloquiumNote", "kolloquiumCP"})
@@ -38,6 +39,12 @@ public class Fach {
         this.kolloquiumCP = new SimpleIntegerProperty(0);
     }
 
+    /**
+     * Constructor für neue einträge
+     *
+     * @param fach      Name des neuen Faches
+     * @param noteliste bisherige einträge
+     */
     public Fach(String fach, ObservableList<Fach> noteliste) {
         this.fach = new SimpleStringProperty(fach);
         this.note = new SimpleDoubleProperty(0.0);
@@ -50,14 +57,26 @@ public class Fach {
         this.noteliste = noteliste;
     }
 
+    /**
+     * Von NotenListeWrapper/JAXB benutze Liste
+     *
+     * @return
+     */
     public ObservableList<Fach> getNoteliste() {
         return noteliste;
     }
 
+    /**
+     * @return fachname
+     */
     public String getFach() {
         return fach.get();
     }
 
+    /**
+     * Überprüft die Anzahl gleichnamiger Fächer, sowie deren bisherigen Noten
+     * @param fach fachname zum aktuallisieren
+     */
     public void setFach(String fach) {
         int i = 1;
         int oldCP = 0;
@@ -71,7 +90,6 @@ public class Fach {
                         i++;
                     } else {
                         new InfoWindows("INFO", null, "Note ist " + data.getNote() + "\nBereits bestanden!");
-                        throw new IllegalArgumentException();
                     }
             }
             try {
@@ -92,6 +110,10 @@ public class Fach {
         return note.get();
     }
 
+    /**
+     * Noten nach Gültigkeit, sowie 0.0 für leer
+     * @param note
+     */
     public void setNote(Double note) {
         if (!(note == 0.0 || note == 1.0 || note == 1.3 || note == 1.7
                 || note == 2.0 || note == 2.3 || note == 2.7
@@ -122,10 +144,14 @@ public class Fach {
         return versuch.get();
     }
 
+    /**
+     * versuche nicht auf über 3 einstellbar
+     * @param versuch
+     */
     public void setVersuch(Integer versuch) {
         if (versuch >= 0 && versuch <= 3) {
             this.versuch.set(versuch);
-        } else throw new IllegalArgumentException();
+        }
     }
 
     public IntegerProperty versuchProperty() {

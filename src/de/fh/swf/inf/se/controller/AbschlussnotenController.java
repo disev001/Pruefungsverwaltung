@@ -16,15 +16,16 @@ import java.text.DecimalFormat;
 
 /**
  * Created by dsee on 06.12.2016.
+ * Controllerklasse für Dialogfenster
  */
 public class AbschlussnotenController {
     private static final double ABSCHLUSS_CP = 12.0;
     private static final double KOLLOQUIUM_CP = 3.0;
-    ObservableList<Double> notenauswahl = FXCollections.observableArrayList();
-    boolean okClicked;
-    ObservableList<Fach> list;
-    Fach abschluss = new Fach();
-    DecimalFormat d = new DecimalFormat(".#");
+    private ObservableList<Double> notenauswahl = FXCollections.observableArrayList();
+    private boolean okClicked;
+    private ObservableList<Fach> list;
+    private Fach abschluss = new Fach();
+    private DecimalFormat d = new DecimalFormat(".#");
     @FXML
     private TextField tfAB;
     @FXML
@@ -51,15 +52,19 @@ public class AbschlussnotenController {
         return okClicked;
     }
 
+
     @FXML
     private void handleOk() {
         okClicked = true;
+        //schreibe Noten liste, wenn OK
         setAbschlussnote(abschluss.getAbschlussNote());
         setKolloquium(abschluss.getKolloquiumNote());
         dialogStage.close();
     }
 
-
+    /**
+     * initialisiert handler der Stage
+     */
     @FXML
     private void initialize() {
         //Eintragen der Noten
@@ -93,22 +98,32 @@ public class AbschlussnotenController {
         });
     }
 
+    /**
+     * Setze Note und reaktion der Labels
+     *
+     * @param note
+     */
     private void setAbschlussnote(Double note) {
-            for (Fach a : list) {
-                a.setAbschlussNote(note);
-                a.setAbschlussCP((int)ABSCHLUSS_CP);
-            }
-       // }
+        for (Fach a : list) {
+            a.setAbschlussNote(note);
+            a.setAbschlussCP((int) ABSCHLUSS_CP);
+        }
+        // }
         lblAn.setText(d.format(rechneNote(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
         lblGCP.setText(Double.toString(rechneCP(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
 
     }
 
+    /**
+     * Setze Note und reaktion der Labels
+     *
+     * @param note
+     */
     private void setKolloquium(Double note) {
-            for (Fach a : list) {
-                a.setKolloquiumNote(note);
-                a.setKolloquiumCP((int)KOLLOQUIUM_CP);
-            }
+        for (Fach a : list) {
+            a.setKolloquiumNote(note);
+            a.setKolloquiumCP((int) KOLLOQUIUM_CP);
+        }
         lblAn.setText(d.format(rechneNote(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
         lblGCP.setText(Double.toString(rechneCP(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
 
@@ -119,6 +134,11 @@ public class AbschlussnotenController {
         dialogStage.close();
     }
 
+    /**
+     * laden der bereits eingetragenen Noten beim Öffnen des Fensters
+     *
+     * @param list
+     */
     public void setList(ObservableList<Fach> list) {
         this.list = list;
         boolean result = list.stream().anyMatch(obj -> {
@@ -147,6 +167,12 @@ public class AbschlussnotenController {
         }
     }
 
+    /**
+     * Berechne Abschlussnoten Durchschnitt
+     * @param noteA Abschlussnote
+     * @param noteK Kolloquiumnote
+     * @return Durchschnitt für Label
+     */
     private double rechneNote(double noteA, double noteK) {
         if (noteA != 0.0 && noteK != 0.0) {
             return ((noteA * (ABSCHLUSS_CP / (ABSCHLUSS_CP + KOLLOQUIUM_CP))) + (noteK * (KOLLOQUIUM_CP / (ABSCHLUSS_CP + KOLLOQUIUM_CP))));
@@ -160,6 +186,12 @@ public class AbschlussnotenController {
 
     }
 
+    /**
+     * Berechne Abschlussnoten Gesammt CP
+     * @param noteA Abschlussnote
+     * @param noteK Kolloquiumnote
+     * @return Gesammelte CP für Label
+     */
     private double rechneCP(double noteA, double noteK) {
         if (noteA != 0.0 && noteK != 0.0) {
             return ABSCHLUSS_CP + KOLLOQUIUM_CP;

@@ -44,6 +44,11 @@ public class MainApp extends Application {
         launch(args);
     }
 
+    /**
+     * Laden der Oberfläche, der Controller und weiteren Initialisierungsdaten
+     *
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -60,6 +65,7 @@ public class MainApp extends Application {
             primaryStage.show();
             NotenListeController controller = loader.getController();
             controller.setMainApp(this);
+            //Versuche datei zu laden
             handleOpen();
             controller.setLabels();
         } catch (IOException e) {
@@ -79,15 +85,22 @@ public class MainApp extends Application {
         });
     }
 
+    //Übergabe der ObservableList an fremde Klassen um damit zu interagieren
     public ObservableList<Fach> getNotenListe() {
         return notenListe;
     }
 
+    //Übergabe der Stage an fremde Klassen um damit zu interagieren
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
 
+    /**
+     * Besorgt den Ausführungspfad des Programms
+     *
+     * @return null für ungültigen Pfad
+     */
     public File getFilePath() {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
         String filePath = prefs.get("filePath", null);
@@ -98,6 +111,11 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Anzeigen der Benutzen Datei im Programmtitel
+     *
+     * @param file geladene Datei
+     */
     public void setFilePath(File file) {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
         if (file != null) {
@@ -113,6 +131,11 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Lade Noten, wird beim start ausgeführt
+     *
+     * @param file vom Programm bestimmter Dateipfad
+     */
     public void loadDataFromFile(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(NotenListeWrapper.class);
@@ -122,15 +145,18 @@ public class MainApp extends Application {
             notenListe.addAll(wrapper.getNoteliste());
             setFilePath(file);
 
-
         } catch (Exception e) { // catches ANY exception
-            System.out.println(e);
+            //Falls keine oder ungültige Datei, lege neuen Eintrag an
             notenListe.add(new Fach("Neue Prüfung", notenListe));
-
             new InfoWindows("Error", "Datei nicht geladen", "Datei" + file.getAbsolutePath() + " konnte nicht geladen werden");
         }
     }
 
+    /**
+     * Speichern der Noten
+     *
+     * @param file pfad und name nicht frei wählbar
+     */
     public void saveDataToFile(File file) {
         try {
             JAXBContext context = JAXBContext
@@ -146,6 +172,9 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * festlegung des zu ladendes Pfades
+     */
     private void handleOpen() {
         File f = null;
         try {
@@ -160,6 +189,12 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Laden der Stage für Abschlussnoten Dialogfenster
+     * @param list aktuelle notenliste
+     *
+     * @return reaktion auf die art des fenster schließens
+     */
     public boolean showAbschluss(ObservableList<Fach> list) {
         try {
             FXMLLoader loader = new FXMLLoader();

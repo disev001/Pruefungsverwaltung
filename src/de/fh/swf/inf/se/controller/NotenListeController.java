@@ -21,7 +21,7 @@ import java.io.File;
 
 public class NotenListeController {
 
-    ObservableList<Fach> notenListe;
+    private ObservableList<Fach> notenListe;
     @FXML
     private TableView<Fach> notenTable;
     @FXML
@@ -48,10 +48,11 @@ public class NotenListeController {
 
     }
 
-
+    /**
+     * Initialisierung, wird vom fxml loader aufgerufen
+     */
     @FXML
     private void initialize() {
-        // Initialisierung, wird vom fxml loader aufgerufen
         tc_fach.setCellValueFactory(cellData -> cellData.getValue().fachProperty());
         tc_note.setCellValueFactory(cellData -> cellData.getValue().noteProperty().asObject());
         tc_cp.setCellValueFactory(cellData -> cellData.getValue().creditPointsProperty().asObject());
@@ -65,6 +66,9 @@ public class NotenListeController {
         rowEvents();
     }
 
+    /**
+     * Events welche den Fachnamen betreffen
+     */
     private void fachnameEvents() {
         //Editiertbarkeit Fachname
         tc_fach.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -83,6 +87,9 @@ public class NotenListeController {
         );
     }
 
+    /**
+     * Events welche die Noten betreffen
+     */
     private void noteEvents() {
         //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -98,6 +105,9 @@ public class NotenListeController {
         );
     }
 
+    /**
+     * Events welche die CP betreffen
+     */
     private void cpEvents() {
         //Editiertbarkeit der CP
         tc_cp.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -114,6 +124,9 @@ public class NotenListeController {
         );
     }
 
+    /**
+     * Events welche die Versuche betreffen
+     */
     private void versuchEvents() {
         //Editiertbarkeit der Versuche
         tc_versuch.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -128,6 +141,9 @@ public class NotenListeController {
         );
     }
 
+    /**
+     * Löschen von Zeilen events
+     */
     private void rowEvents() {
         // Zeilen löschen
         notenTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -175,6 +191,9 @@ public class NotenListeController {
         this.mainApp.showAbschluss(this.notenListe);
     }
 
+    /**
+     * änderung der Übersichtlabels
+     */
     public void setLabels(){
         lbl_cp.setText(String.valueOf(FachRechnungen.rechneCP(notenListe)));
         lbl_note.setText(String.valueOf(FachRechnungen.rechneNote(notenListe)));
