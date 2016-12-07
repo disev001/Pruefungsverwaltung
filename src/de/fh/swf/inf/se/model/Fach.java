@@ -1,6 +1,5 @@
 package de.fh.swf.inf.se.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import de.fh.swf.inf.se.InfoWindows;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -138,47 +137,47 @@ public class Fach {
         return abschlussNote.get();
     }
 
-    public DoubleProperty abschlussNoteProperty() {
-        return abschlussNote;
-    }
-
     public void setAbschlussNote(double abschlussNote) {
         this.abschlussNote.set(abschlussNote);
+    }
+
+    public DoubleProperty abschlussNoteProperty() {
+        return abschlussNote;
     }
 
     public int getAbschlussCP() {
         return abschlussCP.get();
     }
 
-    public IntegerProperty abschlussCPProperty() {
-        return abschlussCP;
-    }
-
     public void setAbschlussCP(int abschlussCP) {
         this.abschlussCP.set(abschlussCP);
+    }
+
+    public IntegerProperty abschlussCPProperty() {
+        return abschlussCP;
     }
 
     public double getKolloquiumNote() {
         return kolloquiumNote.get();
     }
 
-    public DoubleProperty kolloquiumNoteProperty() {
-        return kolloquiumNote;
-    }
-
     public void setKolloquiumNote(double kolloquiumNote) {
         this.kolloquiumNote.set(kolloquiumNote);
+    }
+
+    public DoubleProperty kolloquiumNoteProperty() {
+        return kolloquiumNote;
     }
 
     public int getKolloquiumCP() {
         return kolloquiumCP.get();
     }
 
-    public IntegerProperty kolloquiumCPProperty() {
-        return kolloquiumCP;
-    }
-
     public void setKolloquiumCP(int kolloquiumCP) {
         this.kolloquiumCP.set(kolloquiumCP);
+    }
+
+    public IntegerProperty kolloquiumCPProperty() {
+        return kolloquiumCP;
     }
 }

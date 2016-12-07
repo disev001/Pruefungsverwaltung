@@ -1,17 +1,18 @@
 package de.fh.swf.inf.se.controller;
 
 import de.fh.swf.inf.se.model.Fach;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 /**
  * Created by dsee on 06.12.2016.
@@ -19,6 +20,11 @@ import java.text.NumberFormat;
 public class AbschlussnotenController {
     private static final double ABSCHLUSS_CP = 12.0;
     private static final double KOLLOQUIUM_CP = 3.0;
+    ObservableList<Double> notenauswahl = FXCollections.observableArrayList();
+    boolean okClicked;
+    ObservableList<Fach> list;
+    Fach abschluss = new Fach();
+    DecimalFormat d = new DecimalFormat(".#");
     @FXML
     private TextField tfAB;
     @FXML
@@ -35,14 +41,7 @@ public class AbschlussnotenController {
     private ComboBox<Double> cbAB;
     @FXML
     private ComboBox<Double> cbK;
-
-    ObservableList<Double> notenauswahl = FXCollections.observableArrayList();
-
     private Stage dialogStage;
-    boolean okClicked;
-    ObservableList<Fach> list;
-    Fach abschluss = new Fach();
-    DecimalFormat d = new DecimalFormat(".#");
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -95,7 +94,6 @@ public class AbschlussnotenController {
     }
 
     private void setAbschlussnote(Double note) {
-     //   if (!cbAB.getValue().equals(0.0)) {
             for (Fach a : list) {
                 a.setAbschlussNote(note);
                 a.setAbschlussCP((int)ABSCHLUSS_CP);
@@ -107,12 +105,10 @@ public class AbschlussnotenController {
     }
 
     private void setKolloquium(Double note) {
-    //    if (!cbK.getValue().equals(0.0)) {
             for (Fach a : list) {
                 a.setKolloquiumNote(note);
                 a.setKolloquiumCP((int)KOLLOQUIUM_CP);
             }
-     //   }
         lblAn.setText(d.format(rechneNote(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
         lblGCP.setText(Double.toString(rechneCP(abschluss.getAbschlussNote(),abschluss.getKolloquiumNote())));
 

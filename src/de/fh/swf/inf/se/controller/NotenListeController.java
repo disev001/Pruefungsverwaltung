@@ -1,6 +1,5 @@
 package de.fh.swf.inf.se.controller;
 
-import de.fh.swf.inf.se.InfoWindows;
 import de.fh.swf.inf.se.MainApp;
 import de.fh.swf.inf.se.model.Fach;
 import de.fh.swf.inf.se.model.FachRechnungen;
@@ -15,7 +14,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.FileChooser;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -39,14 +37,10 @@ public class NotenListeController {
     @FXML
     private Label lbl_cp;
     @FXML
-    private Label lbl_static_gesammtcp;
-    @FXML
-    private Label lbl_static_notendurchschnitt;
-    @FXML
     private Button btn_save;
     @FXML
     private Button btn_extra;
-    @SuppressWarnings("unused")
+
     private MainApp mainApp;
     private File f;
 
@@ -84,14 +78,11 @@ public class NotenListeController {
                         }
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setFach(t.getNewValue());
-                        //Ändern von Standartfachnamen erstellt neuen Eintrag
-
                     }
                 }
         );
     }
 
-    //TODO: Keine weiteren Noten wenn bereits bestanden!
     private void noteEvents() {
         //Editiertbarkeit der Note
         tc_note.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -137,7 +128,6 @@ public class NotenListeController {
         );
     }
 
-    //TODO: was passiert mit versuchen beim beim löschen?
     private void rowEvents() {
         // Zeilen löschen
         notenTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -162,8 +152,6 @@ public class NotenListeController {
     }
 
     public void setListe() {
-
-        // Add observable list data to the table
         notenListe = this.mainApp.getNotenListe();
         notenTable.setItems(notenListe);
     }
@@ -174,10 +162,6 @@ public class NotenListeController {
         mainApp.setFilePath(null);
     }
 
-    /**
-     * Saves the file to the person file that is currently open. If there is no
-     * open file, the "save as" dialog is shown.
-     */
     @FXML
     private void handleSave() {
         File f = mainApp.getFilePath();
@@ -186,10 +170,6 @@ public class NotenListeController {
         }
     }
 
-    /**
-     * Saves the file to the person file that is currently open. If there is no
-     * open file, the "save as" dialog is shown.
-     */
     @FXML
     private void handleAbschlussnoten() {
         this.mainApp.showAbschluss(this.notenListe);
